@@ -48,6 +48,7 @@ Consultez les sujets et corrections des années précédentes pour vous prépare
 Cette section est mise à jour régulièrement pour inclure de nouvelles ressources. N'hésitez pas à revenir fréquemment pour découvrir les ajouts.
 
 ??? info "Historique des mises à jour"
+    * 18.05.2026 - Ajout de la plateforme AutoMATHismes !
     * 23.01.2026 - Ajout des chapitres 8 à 11 + mise à jour des documents et DS
     * 06.12.2025 - Ajout de la page "Documents" avec TD+correction
     * 14.10.2025 - Ajout des premiers automatismes
