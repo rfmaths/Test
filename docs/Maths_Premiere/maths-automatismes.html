@@ -106,21 +106,48 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:18px 3
 .stat-val{font-size:1.8rem;font-weight:700}
 .stat-label{font-size:.8rem;color:var(--text-muted);margin-top:4px}
 .results-breakdown{text-align:left;margin-top:20px}
-.breakdown-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:.9rem}
+.breakdown-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);font-size:.9rem;cursor:pointer;transition:background .15s;border-radius:4px}
+.breakdown-row:hover{background:var(--surface2);padding-left:8px}
 .breakdown-row .bq{flex:1;color:var(--text-muted);font-size:.82rem}
-.breakdown-row .br{font-weight:600}
+.breakdown-row .br{font-weight:600;white-space:nowrap;margin-left:12px}
 .br.ok{color:var(--accent3)}.br.ko{color:var(--accent)}
+/* Detail panel */
+.breakdown-detail{display:none;padding:12px 16px;margin:0 0 4px 0;background:var(--surface2);border-radius:10px;font-size:.88rem;line-height:1.6;border-left:3px solid var(--border)}
+.breakdown-detail.show{display:block}
+.breakdown-detail.ok-detail{border-left-color:var(--accent3)}
+.breakdown-detail.ko-detail{border-left-color:var(--accent)}
+.bd-q{color:var(--text);margin-bottom:8px;line-height:1.5}
+.bd-your{margin-bottom:4px}
+.bd-correct{color:var(--accent3);font-weight:600;margin-bottom:8px}
+.bd-lesson{color:var(--text-muted);font-size:.83rem;padding-top:8px;border-top:1px solid var(--border);margin-top:8px}
 .results-btns{display:flex;gap:12px;justify-content:center;margin-top:28px}
 .btn-secondary{padding:12px 24px;border-radius:50px;border:1.5px solid var(--border);background:transparent;color:var(--text);font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:600;cursor:pointer;transition:all .2s}
 .btn-secondary:hover{border-color:var(--accent2);color:var(--accent2)}
 .btn-primary{padding:12px 28px;border-radius:50px;border:none;background:var(--accent2);color:var(--bg);font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;transition:all .2s}
 .btn-primary:hover{filter:brightness(1.1)}
-@media(max-width:600px){
+/* Hamburger */
+.hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:4px 8px}
+.hamburger span{display:block;width:24px;height:2px;background:var(--text);border-radius:2px;transition:all .25s}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+/* Mobile menu */
+.mobile-menu{display:none;flex-direction:column;position:absolute;top:60px;left:0;right:0;background:rgba(15,14,23,.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);z-index:99;padding:8px 0}
+.mobile-menu.open{display:flex}
+.mob-item{padding:14px 24px;border:none;background:none;color:var(--text);font-family:'Outfit',sans-serif;font-size:1rem;font-weight:600;text-align:left;cursor:pointer;transition:background .15s;display:block;width:100%}
+.mob-item:hover{background:var(--surface2)}
+.icon-btn{padding:6px 12px!important;font-size:1rem!important}
+@media(max-width:680px){
   .mode-cards{grid-template-columns:1fr}
   .choices{grid-template-columns:1fr}
-  nav{padding:14px 16px}
+  nav{padding:12px 16px}
   .screen{padding:20px 16px}
   .results-stats{grid-template-columns:1fr}
+  #nav-tabs-desktop{display:none}
+  .hamburger{display:flex}
+}
+@media(min-width:681px){
+  .mobile-menu{display:none!important}
 }
 </style>
 </head>
@@ -129,14 +156,27 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:18px 3
 <div id="app">
   <nav>
     <div class="nav-logo"><span style="color:var(--accent2)">Auto</span>MATH<span style="color:var(--accent2)">ismes</span></div>
-    <div class="nav-tabs">
+    <!-- Desktop tabs -->
+    <div class="nav-tabs" id="nav-tabs-desktop">
       <button class="nav-tab active" onclick="showScreen('home')">Accueil</button>
       <button class="nav-tab" onclick="showScreen('train-themes')">Entraînement</button>
       <button class="nav-tab" onclick="startExam()">Examen</button>
-      <a href="https://immacespalion.github.io/blayassi" target="_blank" class="nav-tab" style="font-size:.8rem;padding:6px 14px;text-decoration:none;color:var(--accent3);border-color:var(--accent3)">← Site</a>
-      <button class="nav-tab reset-btn" onclick="resetAll()" title="Remettre à zéro tous les scores" style="font-size:.8rem;padding:6px 14px;color:var(--accent);border-color:var(--accent)">↺ Reset</button>
+      <a href="index.html" class="nav-tab icon-btn" title="Retour au site" style="text-decoration:none;color:var(--accent3);border-color:var(--accent3)">🏠</a>
+      <button class="nav-tab icon-btn" onclick="resetAll()" title="Remettre à zéro" style="color:var(--accent);border-color:var(--accent)">↺</button>
     </div>
+    <!-- Hamburger (mobile only) -->
+    <button class="hamburger" id="hamburger-btn" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <button class="mob-item" onclick="showScreen('home');toggleMenu()">🏠 Accueil</button>
+    <button class="mob-item" onclick="showScreen('train-themes');toggleMenu()">🎯 Entraînement</button>
+    <button class="mob-item" onclick="startExam();toggleMenu()">⏱️ Examen</button>
+    <a href="index.html" class="mob-item" style="text-decoration:none;color:var(--accent3)">🏠 Retour au site</a>
+    <button class="mob-item" onclick="resetAll();toggleMenu()" style="color:var(--accent)">↺ Remettre à zéro</button>
+  </div>
 
   <div id="screen-home" class="screen active">
     <div class="hero">
@@ -231,6 +271,12 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:18px 3
       </div>
     </div>
   </div>
+  <!-- Footer -->
+  <footer style="text-align:center;padding:32px 16px 24px;color:var(--text-muted);font-size:.78rem;border-top:1px solid var(--border);margin-top:48px">
+    <span>© 2026 <strong style="color:var(--text)">Kévin BLAYASSI</strong> — Professeur de mathématiques</span><br>
+    <span style="opacity:.7">LG Immaculée Conception · Espalion</span><br>
+    <span style="opacity:.5;margin-top:6px;display:block">Ressource libre d'utilisation à des fins pédagogiques</span>
+  </footer>
 </div>
 <div class="level-toast" id="level-toast"></div>
 <script>
@@ -965,9 +1011,11 @@ function getRankByLevel(lv){return RANK_BY_LEVEL[Math.min(lv-1,4)];}
 function showScreen(name){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-'+name).classList.add('active');
-  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  // Update desktop tabs (first 3 only — icon btns not highlighted)
+  const tabs=document.querySelectorAll('#nav-tabs-desktop .nav-tab:not(.icon-btn)');
+  tabs.forEach(t=>t.classList.remove('active'));
   const map={home:0,'train-themes':1,train:1,exam:2,results:2};
-  if(map[name]!==undefined)document.querySelectorAll('.nav-tab')[map[name]]?.classList.add('active');
+  if(map[name]!==undefined)tabs[map[name]]?.classList.add('active');
   if(name==='train-themes')renderThemes();
 }
 
@@ -1199,56 +1247,114 @@ function renderExamQ(){
   const done=ES.answers[ES.cur]!==null;
   q.choices.forEach(c=>{
     const btn=document.createElement('button');btn.className='choice-btn';btn.innerHTML=c.val;
-    if(done){btn.disabled=true;if(c.correct)btn.classList.add('correct');if(!c.correct&&ES.answers[ES.cur]===c.val)btn.classList.add('wrong');}
-    else btn.onclick=()=>onExamAnswer(c.correct,c.val);
+    if(done){
+      btn.disabled=true;
+      // Mark the chosen answer only (no color, just a subtle indicator)
+      if(ES.answers[ES.cur]===c.val) btn.style.borderColor='var(--text-muted)';
+    } else {
+      btn.onclick=()=>onExamAnswer(c.correct,c.val);
+    }
     ce.appendChild(btn);
   });
 }
 
 function onExamAnswer(correct,val){
   ES.answers[ES.cur]=val;
-  document.querySelectorAll('#exam-choices .choice-btn').forEach(b=>{
-    b.disabled=true;
-    const q=ES.questions[ES.cur];
-    if(q.choices.find(c=>c.val===b.innerHTML&&c.correct))b.classList.add('correct');
-    if(b.innerHTML===val&&!correct)b.classList.add('wrong');
-  });
+  // No visual feedback during exam — student discovers at the end
+  document.querySelectorAll('#exam-choices .choice-btn').forEach(b=>b.disabled=true);
   renderExamDots();
   setTimeout(()=>{
     if(ES.answers.every(a=>a!==null)){finishExam();return;}
     let next=ES.cur;
     for(let i=1;i<=12;i++){const ni=(ES.cur+i)%12;if(ES.answers[ni]===null){next=ni;break;}}
     ES.cur=next;renderExamQ();renderExamDots();
-  },600);
+  },300);
 }
 
 function finishExam(){
-  clearInterval(examTimer);ES.done=true;
+  clearInterval(examTimer); ES.done=true;
   const elapsed=Math.floor((Date.now()-ES.start)/1000);
-  const correct=ES.answers.filter((a,i)=>ES.questions[i].choices.find(c=>c.val===a&&c.correct)).length;
-  const score=Math.max(0,correct*10-Math.floor(elapsed/10));
+  const nbCorrect=ES.answers.filter((a,i)=>ES.questions[i].choices.find(c=>c.val===a&&c.correct)).length;
+  const score=Math.max(0,nbCorrect*10-Math.floor(elapsed/10));
   document.getElementById('results-score').textContent=score;
   document.getElementById('results-score').style.color=score>=80?'var(--accent3)':score>=50?'var(--accent2)':'var(--accent)';
   const grades=["Courage, continue à t'entraîner 📚",'Bien joué ! 👍','Très bien ! 🎯','Excellent ! 🏆'];
-  document.getElementById('results-grade').textContent=grades[Math.min(Math.floor(correct/3),3)];
-  document.getElementById('stat-correct').textContent=`${correct}/12`;
-  const m=Math.floor(elapsed/60),s=elapsed%60;
-  document.getElementById('stat-time').textContent=`${m}:${s.toString().padStart(2,'0')}`;
-  document.getElementById('stat-pct').textContent=Math.round(correct/12*100)+'%';
+  document.getElementById('results-grade').textContent=grades[Math.min(Math.floor(nbCorrect/3),3)];
+  document.getElementById('stat-correct').textContent=nbCorrect+'/12';
+  const mm=Math.floor(elapsed/60), ss=elapsed%60;
+  document.getElementById('stat-time').textContent=mm+':'+(ss<10?'0':'')+ss;
+  document.getElementById('stat-pct').textContent=Math.round(nbCorrect/12*100)+'%';
+
   const bd=document.getElementById('results-breakdown');
-  bd.innerHTML='<div style="font-weight:700;margin-bottom:8px;font-size:.9rem;color:var(--text-muted)">Détail par question</div>';
-  ES.questions.forEach((q,i)=>{
-    const ok=ES.questions[i].choices.find(c=>c.val===ES.answers[i]&&c.correct);
-    const row=document.createElement('div');row.className='breakdown-row';
-    row.innerHTML=`<div class="bq">Q${i+1} · ${q.themeName}</div><div class="br ${ok?'ok':'ko'}">${ok?'✅ Correct':'❌ Incorrect'}</div>`;
+  bd.innerHTML='<div style="font-weight:700;margin-bottom:12px;font-size:.9rem;color:var(--text-muted)">Détail par question <span style="font-weight:400;font-size:.8rem">(clique pour voir l\'explication)</span></div>';
+
+  ES.questions.forEach(function(q,i){
+    const userAns=ES.answers[i]||'—';
+    const ok=!!q.choices.find(function(c){return c.val===userAns&&c.correct;});
+    const correctChoice=q.choices.find(function(c){return c.correct;});
+    const correctVal=correctChoice?correctChoice.val:'—';
+
+    // Strip HTML for short preview
+    const qPreview=q.text.replace(/<[^>]+>/g,' ').replace(/  +/g,' ').trim();
+    const qShort=qPreview.length>70?qPreview.slice(0,70)+'…':qPreview;
+    const userClean=userAns.replace(/<[^>]+>/g,'');
+    const correctClean=correctVal.replace(/<[^>]+>/g,'');
+
+    // Clickable summary row
+    const row=document.createElement('div');
+    row.className='breakdown-row';
+    row.innerHTML='<div class="bq"><strong style="color:var(--text)">Q'+(i+1)+'</strong> · '+q.themeName+'<br><span style="font-size:.78rem">'+qShort+'</span></div>'
+      +'<div class="br '+(ok?'ok':'ko')+'">'+(ok?'✅':'❌')+'</div>';
+
+    // Hidden detail panel
+    const detail=document.createElement('div');
+    detail.className='breakdown-detail '+(ok?'ok-detail':'ko-detail');
+
+    let html='<div class="bd-q">'+q.text+'</div>';
+    html+='<div class="bd-your" style="color:'+(ok?'var(--accent3)':'var(--accent)')+'">Ta réponse : <strong>'+userClean+'</strong> '+(ok?'✅':'❌')+'</div>';
+    if(!ok){
+      html+='<div class="bd-correct">Bonne réponse : '+correctClean+'</div>';
+    }
+    if(q.lesson){
+      html+='<div class="bd-lesson">💡 '+q.lesson;
+      if(q.example) html+='<br><em style="color:var(--accent2)">'+q.example+'</em>';
+      html+='</div>';
+    }
+    detail.innerHTML=html;
+
+    row.onclick=function(){
+      var wasOpen=detail.classList.contains('show');
+      bd.querySelectorAll('.breakdown-detail').forEach(function(d){d.classList.remove('show');});
+      if(!wasOpen) detail.classList.add('show');
+    };
+
     bd.appendChild(row);
+    bd.appendChild(detail);
   });
+
   showScreen('results');
 }
+
 
 // ═══════════════════════════════════════════════
 //  BG CANVAS
 // ═══════════════════════════════════════════════
+function toggleMenu(){
+  const btn=document.getElementById('hamburger-btn');
+  const menu=document.getElementById('mobile-menu');
+  btn.classList.toggle('open');
+  menu.classList.toggle('open');
+}
+// Close menu when clicking outside
+document.addEventListener('click',e=>{
+  const menu=document.getElementById('mobile-menu');
+  const btn=document.getElementById('hamburger-btn');
+  if(menu.classList.contains('open')&&!menu.contains(e.target)&&!btn.contains(e.target)){
+    menu.classList.remove('open');
+    btn.classList.remove('open');
+  }
+});
+
 (()=>{
   const cv=document.getElementById('bg-canvas'),ctx=cv.getContext('2d');
   let W,H;const resize=()=>{W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;};
