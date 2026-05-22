@@ -1,6 +1,6 @@
 ---
 title: Algorithmes de tri
-weight: 40
+weight: 3
 ---
 
 # Algorithmes de tri 📊
