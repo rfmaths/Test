@@ -15,15 +15,10 @@ hide:
 
 ???+ warning "Attention"
     Ce site est en cours d'élaboration. 
-    
     De nombreux contenus sont encore absents et le contenu déjà présent peut être incomplet ou contenir des erreurs. 
 
 
-Bienvenue à tous, chers **lycéens** ! Ce site a été spécialement conçu pour vous accompagner tout au long de l'année scolaire dans les disciplines suivantes :
-
-- **Sciences Numériques et Technologie (SNT)** - Classe de Seconde
-- **Enseignement de Spécialité Mathématiques (EDS Maths)** - Classe de Première
-- **Enseignement de Spécialité Numérique et Sciences Informatiques (EDS NSI)** - Classe de Première
+Bienvenue à tous, chers **collégiens, lycéens, étudiants** ! Ce site a été spécialement conçu pour vous accompagner en Mathématiques, tout au long de votre scolarité.
 
 ## Objectifs du site
 
