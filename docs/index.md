@@ -28,7 +28,7 @@ Bienvenue à tous, chers **collégiens, lycéens, étudiants** ! Ce site a été
 
 ## Comment naviguer sur le site ?
 
-- **Menu principal** : Utilisez le menu en haut de la page pour accéder aux différentes disciplines.
+- **Menu principal** : Utilisez le menu en haut de la page pour accéder aux différents niveaux, spécialités, etc...
 - **Ressources** : Cliquez sur la discipline de votre choix pour consulter les cours, fiches méthodologiques et exercices.
 - **Projets** : Retrouvez des idées de projets collaboratifs, des sujets d'étude et des tutoriels détaillés.
 
